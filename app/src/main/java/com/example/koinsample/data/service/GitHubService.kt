@@ -7,5 +7,5 @@ import retrofit2.http.Path
 
 interface GitHubService {
     @GET("users/{user}/repos")
-    suspend fun listReposAsync(@Path("user") user: String): Deferred<List<Repo>>
+    suspend fun listReposAsync(@Path("user") user: String): List<Repo>
 }

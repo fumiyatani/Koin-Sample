@@ -4,20 +4,19 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.koinsample.data.ProjectRepository
 import com.example.koinsample.data.entity.Repo
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class FirstViewModel(private val repository: ProjectRepository) : ViewModel() {
     private val _repositories = MutableLiveData<List<Repo>>()
     val repositories: LiveData<List<Repo>> = _repositories.distinctUntilChanged()
 
-    fun getRepositories(userName: String) {
+    fun getRepositories(userName: String) =
         viewModelScope.launch {
             runCatching {
-                withContext(Dispatchers.IO) {
-                    repository.getRepositories(userName)
-                }
+                Log.d("TAG", "getRepositories: 通信処理前 $coroutineContext")
+                val response = repository.getRepositories(userName)
+                Log.d("TAG", "getRepositories: 通信処理後 $coroutineContext")
+                response
             }.onSuccess {
                 _repositories.postValue(it)
             }.onFailure {
@@ -25,7 +24,6 @@ class FirstViewModel(private val repository: ProjectRepository) : ViewModel() {
                 Log.d("TAG", "getRepositories:")
             }
         }
-    }
 }
 
 @Suppress("UNCHECKED_CAST")
