@@ -17,7 +17,6 @@ class FirstViewModel(private val repository: ProjectRepository) : ViewModel(){
                 val response = repository.getRepositories(userName)
                 Log.d("First", "getRepositories: start repository")
                 if (response.isSuccessful) {
-
                     _repositories.postValue(response.body())
                 }
             } catch (e: Exception) {
