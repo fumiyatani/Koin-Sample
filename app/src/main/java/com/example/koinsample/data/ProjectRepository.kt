@@ -4,7 +4,7 @@ import com.example.koinsample.data.service.service
 
 class ProjectRepository {
 
-    suspend fun getRepositories(userName: String) = service.listRepos(userName)
+    suspend fun getRepositories(userName: String) = service.listReposAsync(userName).await()
 
     companion object {
         private var instance: ProjectRepository? = null

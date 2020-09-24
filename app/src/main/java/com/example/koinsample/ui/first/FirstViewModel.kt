@@ -4,23 +4,25 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.koinsample.data.ProjectRepository
 import com.example.koinsample.data.entity.Repo
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Exception
+import kotlinx.coroutines.withContext
 
-class FirstViewModel(private val repository: ProjectRepository) : ViewModel(){
+class FirstViewModel(private val repository: ProjectRepository) : ViewModel() {
     private val _repositories = MutableLiveData<List<Repo>>()
-    val repositories: LiveData<List<Repo>> = _repositories
+    val repositories: LiveData<List<Repo>> = _repositories.distinctUntilChanged()
 
     fun getRepositories(userName: String) {
         viewModelScope.launch {
-            try {
-                val response = repository.getRepositories(userName)
-                Log.d("First", "getRepositories: start repository")
-                if (response.isSuccessful) {
-                    _repositories.postValue(response.body())
+            runCatching {
+                withContext(Dispatchers.IO) {
+                    repository.getRepositories(userName)
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
+            }.onSuccess {
+                _repositories.postValue(it)
+            }.onFailure {
+                it.printStackTrace()
+                Log.d("TAG", "getRepositories:")
             }
         }
     }
