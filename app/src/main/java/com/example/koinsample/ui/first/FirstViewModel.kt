@@ -1,6 +1,5 @@
 package com.example.koinsample.ui.first
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.koinsample.data.ProjectRepository
 import com.example.koinsample.data.entity.Repo
@@ -13,15 +12,11 @@ class FirstViewModel(private val repository: ProjectRepository) : ViewModel() {
     fun getRepositories(userName: String) =
         viewModelScope.launch {
             runCatching {
-                Log.d("TAG", "getRepositories: 通信処理前 $coroutineContext")
-                val response = repository.getRepositories(userName)
-                Log.d("TAG", "getRepositories: 通信処理後 $coroutineContext")
-                response
+                repository.getRepositories(userName)
             }.onSuccess {
                 _repositories.postValue(it)
             }.onFailure {
                 it.printStackTrace()
-                Log.d("TAG", "getRepositories:")
             }
         }
 }
