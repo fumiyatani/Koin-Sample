@@ -1,9 +1,11 @@
+@file:Suppress("unused")
+
 package com.example.koinsample
 
 import android.app.Application
 import com.example.koinsample.data.GitHubRepository
 import com.example.koinsample.data.GitHubRepositoryImpl
-import com.example.koinsample.ui.first.FirstViewModel
+import com.example.koinsample.ui.first.GitHubRepositoryListViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -18,12 +20,12 @@ class KoinSampleApplication : Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@KoinSampleApplication)
-            modules(module)
+            modules(githubRepositoryListModule)
         }
     }
 }
 
-val module = module {
+val githubRepositoryListModule = module {
     single<GitHubRepository> { GitHubRepositoryImpl.getInstance() }
-    viewModel { FirstViewModel(get()) }
+    viewModel { GitHubRepositoryListViewModel(get()) }
 }

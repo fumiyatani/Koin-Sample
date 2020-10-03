@@ -11,9 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.koinsample.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FirstFragment : Fragment() {
+class GitHubRepositoryListFragment : Fragment() {
 
-    private val firstViewModel: FirstViewModel by viewModel()
+    private val firstViewModel: GitHubRepositoryListViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
