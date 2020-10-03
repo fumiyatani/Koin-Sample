@@ -7,16 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.koinsample.R
-import com.example.koinsample.data.ProjectRepository
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FirstFragment : Fragment() {
 
-    private val firstViewModel: FirstViewModel by viewModels {
-        return@viewModels FirstViewModelFactory(ProjectRepository.getInstance())
-    }
+    private val firstViewModel: FirstViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

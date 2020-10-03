@@ -5,17 +5,17 @@ import com.example.koinsample.data.service.service
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class ProjectRepository {
+class GitHubRepositoryImpl : GitHubRepository {
 
-    suspend fun getRepositories(userName: String): List<Repo> = withContext(Dispatchers.IO) {
+    override suspend fun getRepositories(userName: String): List<Repo> = withContext(Dispatchers.IO) {
         service.listReposAsync(userName)
     }
 
     companion object {
-        private var instance: ProjectRepository? = null
-        fun getInstance(): ProjectRepository =
+        private var instance: GitHubRepositoryImpl? = null
+        fun getInstance(): GitHubRepositoryImpl =
             instance ?: synchronized(this) {
-                instance ?: ProjectRepository().also {
+                instance ?: GitHubRepositoryImpl().also {
                     instance = it
                 }
             }

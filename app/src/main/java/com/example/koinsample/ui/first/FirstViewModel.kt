@@ -1,11 +1,11 @@
 package com.example.koinsample.ui.first
 
 import androidx.lifecycle.*
-import com.example.koinsample.data.ProjectRepository
+import com.example.koinsample.data.GitHubRepository
 import com.example.koinsample.data.entity.Repo
 import kotlinx.coroutines.launch
 
-class FirstViewModel(private val repository: ProjectRepository) : ViewModel() {
+class FirstViewModel(private val repository: GitHubRepository) : ViewModel() {
     private val _repositories = MutableLiveData<List<Repo>>()
     val repositories: LiveData<List<Repo>> = _repositories.distinctUntilChanged()
 
@@ -19,14 +19,4 @@ class FirstViewModel(private val repository: ProjectRepository) : ViewModel() {
                 it.printStackTrace()
             }
         }
-}
-
-@Suppress("UNCHECKED_CAST")
-class FirstViewModelFactory(private val repository: ProjectRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(FirstViewModel::class.java)) {
-            return FirstViewModel(repository) as T
-        }
-        throw IllegalArgumentException("FirstViewModel can not cast")
-    }
 }
