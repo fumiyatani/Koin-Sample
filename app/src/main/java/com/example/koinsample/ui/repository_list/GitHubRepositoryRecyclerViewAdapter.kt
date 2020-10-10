@@ -1,6 +1,5 @@
 package com.example.koinsample.ui.repository_list
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.BindingAdapter
@@ -48,9 +47,13 @@ class GitHubRepositoryRecyclerViewAdapter(
     ) : RecyclerView.ViewHolder(binding.root)
 }
 
+@BindingAdapter("adapter")
+fun bindAdapter(view: RecyclerView, adapter: GitHubRepositoryRecyclerViewAdapter) {
+    view.adapter = adapter
+}
+
 @BindingAdapter("items")
 fun bindItems(view: RecyclerView, repos: List<Repo>?) {
-    Log.d("bindItems", "bindItems: repos : $repos")
     repos?.let {
         val adapter: GitHubRepositoryRecyclerViewAdapter = view.adapter as GitHubRepositoryRecyclerViewAdapter
         adapter.updateList(it)

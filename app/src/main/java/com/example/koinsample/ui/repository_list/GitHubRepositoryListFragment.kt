@@ -8,14 +8,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.koinsample.R
 import com.example.koinsample.databinding.FragmentGithubRepositoryListBinding
-import kotlinx.android.synthetic.main.fragment_github_repository_list.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GitHubRepositoryListFragment : Fragment() {
 
     private val githubRepositoryListViewModel: GitHubRepositoryListViewModel by viewModel()
+
     private lateinit var fragmentGithubRepositoryListBinding: FragmentGithubRepositoryListBinding
-    private lateinit var githubRepositoryRecyclerViewAdapter: GitHubRepositoryRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,17 +28,16 @@ class GitHubRepositoryListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fragmentGithubRepositoryListBinding.lifecycleOwner = this
+        fragmentGithubRepositoryListBinding.lifecycleOwner = viewLifecycleOwner
         fragmentGithubRepositoryListBinding.viewModel = githubRepositoryListViewModel
+        fragmentGithubRepositoryListBinding.adapter =
+            GitHubRepositoryRecyclerViewAdapter(viewLifecycleOwner)
 
-        githubRepositoryRecyclerViewAdapter = GitHubRepositoryRecyclerViewAdapter(this)
+        // 購読開始
+        subscribeToViewModel()
+    }
 
-        with(fragmentGithubRepositoryListBinding.root) {
-            githubRepositoryRecyclerview.apply {
-                setHasFixedSize(true)
-                adapter = githubRepositoryRecyclerViewAdapter
-            }
-        }
+    private fun subscribeToViewModel() {
         githubRepositoryListViewModel.getRepositories("fumiyatani")
     }
 }
