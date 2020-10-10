@@ -11,6 +11,7 @@ import com.example.koinsample.data.entity.Repo
 import com.example.koinsample.databinding.ItemGithubRepositoryRecyclerviewRowBinding
 
 class GitHubRepositoryRecyclerViewAdapter(
+    private val viewModel: GitHubRepositoryListViewModel,
     private val lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<GitHubRepositoryRecyclerViewAdapter.ViewHolder>() {
 
@@ -34,7 +35,16 @@ class GitHubRepositoryRecyclerViewAdapter(
     override fun getItemCount(): Int = githubRepositoryList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        itemGithubRepositoryListBinding.repo = githubRepositoryList[position]
+        val repo = githubRepositoryList[position]
+        itemGithubRepositoryListBinding.repo = repo
+        // Two-WayのBindingを目指していたが、イベントまでxmlに記述すると分かりづらくなりそうなため
+        // onClickListenerのイベントはコード上で行うようにし、
+        // イベントはViewModelのメソッドに流し込むようにした。
+        itemGithubRepositoryListBinding.root.setOnClickListener {
+            viewModel.navigateRepositoryDetail(
+                repo.url
+            )
+        }
     }
 
     fun updateList(updateGithubRepositoryList: List<Repo>) {
@@ -55,7 +65,8 @@ fun bindAdapter(view: RecyclerView, adapter: GitHubRepositoryRecyclerViewAdapter
 @BindingAdapter("items")
 fun bindItems(view: RecyclerView, repos: List<Repo>?) {
     repos?.let {
-        val adapter: GitHubRepositoryRecyclerViewAdapter = view.adapter as GitHubRepositoryRecyclerViewAdapter
+        val adapter: GitHubRepositoryRecyclerViewAdapter =
+            view.adapter as GitHubRepositoryRecyclerViewAdapter
         adapter.updateList(it)
     }
 }

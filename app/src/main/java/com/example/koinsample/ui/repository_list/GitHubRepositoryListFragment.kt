@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.koinsample.R
 import com.example.koinsample.databinding.FragmentGithubRepositoryListBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,13 +32,21 @@ class GitHubRepositoryListFragment : Fragment() {
         fragmentGithubRepositoryListBinding.lifecycleOwner = viewLifecycleOwner
         fragmentGithubRepositoryListBinding.viewModel = githubRepositoryListViewModel
         fragmentGithubRepositoryListBinding.adapter =
-            GitHubRepositoryRecyclerViewAdapter(viewLifecycleOwner)
-
-        // 購読開始
+            GitHubRepositoryRecyclerViewAdapter(githubRepositoryListViewModel, viewLifecycleOwner)
         subscribeToViewModel()
     }
 
+    /**
+     * 購読開始
+     */
     private fun subscribeToViewModel() {
-        githubRepositoryListViewModel.getRepositories("fumiyatani")
+        githubRepositoryListViewModel.url.observe(viewLifecycleOwner) {
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        }
+    }
+
+    companion object {
+        @Suppress("unused")
+        private val TAG = GitHubRepositoryListFragment::class.java.simpleName
     }
 }
