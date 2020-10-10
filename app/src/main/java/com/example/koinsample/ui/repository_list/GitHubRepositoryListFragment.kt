@@ -1,7 +1,6 @@
 package com.example.koinsample.ui.repository_list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,5 +40,12 @@ class GitHubRepositoryListFragment : Fragment() {
             }
         }
         githubRepositoryListViewModel.getRepositories("fumiyatani")
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        githubRepositoryListViewModel.repositories.observe(viewLifecycleOwner) {
+            githubRepositoryRecyclerViewAdapter.updateList(it)
+        }
     }
 }
