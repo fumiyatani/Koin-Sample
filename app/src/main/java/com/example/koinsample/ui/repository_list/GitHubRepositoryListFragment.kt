@@ -41,7 +41,9 @@ class GitHubRepositoryListFragment : Fragment() {
      */
     private fun subscribeToViewModel() {
         githubRepositoryListViewModel.url.observe(viewLifecycleOwner) {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            it.getContentIfNotHandled()?.let {
+                findNavController().navigate(R.id.action_GitHubRepositoryListFragment_to_SecondFragment)
+            }
         }
     }
 
