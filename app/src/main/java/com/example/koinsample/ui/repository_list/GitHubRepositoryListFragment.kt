@@ -30,6 +30,7 @@ class GitHubRepositoryListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fragmentGithubRepositoryListBinding.lifecycleOwner = this
+        fragmentGithubRepositoryListBinding.viewModel = githubRepositoryListViewModel
 
         githubRepositoryRecyclerViewAdapter = GitHubRepositoryRecyclerViewAdapter(this)
 
@@ -40,12 +41,5 @@ class GitHubRepositoryListFragment : Fragment() {
             }
         }
         githubRepositoryListViewModel.getRepositories("fumiyatani")
-        observeViewModel()
-    }
-
-    private fun observeViewModel() {
-        githubRepositoryListViewModel.repositories.observe(viewLifecycleOwner) {
-            githubRepositoryRecyclerViewAdapter.updateList(it)
-        }
     }
 }
