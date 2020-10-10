@@ -1,45 +1,45 @@
 package com.example.koinsample.ui.repository_list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import com.example.koinsample.R
+import com.example.koinsample.databinding.FragmentGithubRepositoryListBinding
+import kotlinx.android.synthetic.main.fragment_github_repository_list.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GitHubRepositoryListFragment : Fragment() {
 
-    private val firstViewModel: GitHubRepositoryListViewModel by viewModel()
-
-    private lateinit var githubRepositoryRecyclerView: RecyclerView
-
-    private val githubRepositoryRecyclerViewAdapter: GitHubRepositoryRecyclerViewAdapter =
-        GitHubRepositoryRecyclerViewAdapter()
+    private val githubRepositoryListViewModel: GitHubRepositoryListViewModel by viewModel()
+    private lateinit var fragmentGithubRepositoryListBinding: FragmentGithubRepositoryListBinding
+    private lateinit var githubRepositoryRecyclerViewAdapter: GitHubRepositoryRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_github_repository_list, container, false)
+        fragmentGithubRepositoryListBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_github_repository_list, container, false
+        )
+        return fragmentGithubRepositoryListBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fragmentGithubRepositoryListBinding.lifecycleOwner = this
 
-        githubRepositoryRecyclerView = view.findViewById(R.id.github_repository_recyclerview)
-        githubRepositoryRecyclerView.apply {
-            adapter = githubRepositoryRecyclerViewAdapter
+        githubRepositoryRecyclerViewAdapter = GitHubRepositoryRecyclerViewAdapter(this)
+
+        with(fragmentGithubRepositoryListBinding.root) {
+            githubRepositoryRecyclerview.apply {
+                setHasFixedSize(true)
+                adapter = githubRepositoryRecyclerViewAdapter
+            }
         }
-
-        firstViewModel.getRepositories("fumiyatani")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        firstViewModel.repositories.observe(viewLifecycleOwner) { repoList ->
-            githubRepositoryRecyclerViewAdapter.setGithubRepositoryList(repoList)
-        }
+        githubRepositoryListViewModel.getRepositories("fumiyatani")
     }
 }
