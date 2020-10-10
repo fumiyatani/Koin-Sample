@@ -5,7 +5,7 @@ package com.example.koinsample
 import android.app.Application
 import com.example.koinsample.data.GitHubRepository
 import com.example.koinsample.data.GitHubRepositoryImpl
-import com.example.koinsample.ui.first.GitHubRepositoryListViewModel
+import com.example.koinsample.ui.repository_list.GitHubRepositoryListViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel

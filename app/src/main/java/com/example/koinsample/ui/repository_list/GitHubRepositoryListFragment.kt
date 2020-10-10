@@ -1,4 +1,4 @@
-package com.example.koinsample.ui.first
+package com.example.koinsample.ui.repository_list
 
 import android.os.Bundle
 import android.util.Log

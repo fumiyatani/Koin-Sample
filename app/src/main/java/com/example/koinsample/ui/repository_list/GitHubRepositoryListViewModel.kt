@@ -1,4 +1,4 @@
-package com.example.koinsample.ui.first
+package com.example.koinsample.ui.repository_list
 
 import androidx.lifecycle.*
 import com.example.koinsample.data.GitHubRepository
