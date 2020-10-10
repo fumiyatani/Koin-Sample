@@ -1,8 +1,10 @@
 package com.example.koinsample.ui.repository_list
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.koinsample.data.GitHubRepository
 import com.example.koinsample.data.entity.Repo
+import com.example.koinsample.util.Event
 import kotlinx.coroutines.launch
 
 class GitHubRepositoryListViewModel(private val repository: GitHubRepository) : ViewModel() {
@@ -16,8 +18,8 @@ class GitHubRepositoryListViewModel(private val repository: GitHubRepository) : 
     private val _repositories = MutableLiveData<List<Repo>>()
     val repositories: LiveData<List<Repo>> = _repositories.distinctUntilChanged()
 
-    private val _url = MutableLiveData<String>()
-    val url: LiveData<String> = _url.distinctUntilChanged()
+    private val _url = MutableLiveData<Event<String>>()
+    val url: LiveData<Event<String>> = _url
 
     private fun loadRepositories(userName: String = "fumiyatani") =
         viewModelScope.launch {
@@ -31,6 +33,7 @@ class GitHubRepositoryListViewModel(private val repository: GitHubRepository) : 
         }
 
     fun navigateRepositoryDetail(url: String) {
-        _url.value = url
+        Log.d(GitHubRepositoryListFragment::class.java.simpleName, "navigateRepositoryDetail: ")
+        _url.value = Event(url)
     }
 }

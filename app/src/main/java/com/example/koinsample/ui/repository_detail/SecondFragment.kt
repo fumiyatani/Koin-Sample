@@ -1,6 +1,7 @@
-package com.example.koinsample.ui.second
+package com.example.koinsample.ui.repository_detail
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ class SecondFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        Log.d(TAG, "onCreateView: ")
         return inflater.inflate(R.layout.fragment_second, container, false)
     }
 
@@ -28,5 +30,9 @@ class SecondFragment : Fragment() {
         view.findViewById<Button>(R.id.button_second).setOnClickListener {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         }
+    }
+
+    companion object {
+        private val TAG = SecondFragment::class.java.simpleName
     }
 }
