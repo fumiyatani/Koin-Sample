@@ -11,8 +11,8 @@ import com.example.koinsample.data.entity.Repo
 import com.example.koinsample.databinding.ItemGithubRepositoryRecyclerviewRowBinding
 
 class GitHubRepositoryRecyclerViewAdapter(
-    private val viewModel: GitHubRepositoryListViewModel,
-    private val lifecycleOwner: LifecycleOwner
+    private val lifecycleOwner: LifecycleOwner,
+    private val itemClickCallback: (String) -> Unit
 ) : RecyclerView.Adapter<GitHubRepositoryRecyclerViewAdapter.ViewHolder>() {
 
     private lateinit var itemGithubRepositoryListBinding: ItemGithubRepositoryRecyclerviewRowBinding
@@ -37,13 +37,13 @@ class GitHubRepositoryRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val repo = githubRepositoryList[position]
         itemGithubRepositoryListBinding.repo = repo
-        // Two-WayのBindingを目指していたが、イベントまでxmlに記述すると分かりづらくなりそうなため
-        // onClickListenerのイベントはコード上で行うようにし、
-        // イベントはViewModelのメソッドに流し込むようにした。
+        // Itemのサイズが可変になるとスクロールがかくつく可能性があるため回避
+        itemGithubRepositoryListBinding.executePendingBindings()
+        // xmlのレイアウトで記述できないか考えていたが、
+        // 画面遷移を行うためのイベントのため特にTwoWayにする必要がないため
+        // 関数をもらう。
         itemGithubRepositoryListBinding.root.setOnClickListener {
-            viewModel.navigateRepositoryDetail(
-                repo.url
-            )
+            itemClickCallback.invoke(repo.url)
         }
     }
 

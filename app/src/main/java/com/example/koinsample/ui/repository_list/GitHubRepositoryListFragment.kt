@@ -32,19 +32,9 @@ class GitHubRepositoryListFragment : Fragment() {
         fragmentGithubRepositoryListBinding.lifecycleOwner = viewLifecycleOwner
         fragmentGithubRepositoryListBinding.viewModel = githubRepositoryListViewModel
         fragmentGithubRepositoryListBinding.adapter =
-            GitHubRepositoryRecyclerViewAdapter(githubRepositoryListViewModel, viewLifecycleOwner)
-        subscribeToViewModel()
-    }
-
-    /**
-     * 購読開始
-     */
-    private fun subscribeToViewModel() {
-        githubRepositoryListViewModel.url.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let {
+            GitHubRepositoryRecyclerViewAdapter(viewLifecycleOwner) {
                 findNavController().navigate(R.id.action_GitHubRepositoryListFragment_to_SecondFragment)
             }
-        }
     }
 
     companion object {
